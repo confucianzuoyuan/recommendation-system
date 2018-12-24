@@ -176,9 +176,9 @@ object streamingRecommender {
       if (!rdd.isEmpty) {
         rdd.map{ case (userId, movieId, rate, startTimeMillis) =>
           //获取近期评分记录
-          val recentRatings = getUserRecentRatings(SingleMongoDB.getCollection("ratingRecords"), K, userId, movieId, rate, startTimeMillis)
+          val recentRatings = getUserRecentRatings(SingleMongoDB.getCollection("ratingsCollection"), K, userId, movieId, rate, startTimeMillis)
           //获取备选电影
-          val candidateMovies = getSimilarMovies(bTopKMostSimilarMovies.value, SingleMongoDB.getCollection("ratingRecords"), movieId, userId, K)
+          val candidateMovies = getSimilarMovies(bTopKMostSimilarMovies.value, SingleMongoDB.getCollection("ratingsCollection"), movieId, userId, K)
           //为备选电影推测评分结果
           val updatedRecommends = createUpdatedRatings(bMovie2movieSimilarity.value, recentRatings, candidateMovies)
           //结果回写到MONGODB，注意！！！！！！其实应该返回给客户，与客户当前推荐进行Merge
