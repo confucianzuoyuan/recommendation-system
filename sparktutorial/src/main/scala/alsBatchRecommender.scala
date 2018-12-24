@@ -45,7 +45,7 @@ object alsBatchRecommender {
 
     val iterations = if (args.length > 1) args(1).toInt else 5
 
-    val dataDir = "/Users/yuanzuo/Desktop/sparktutorial/ml-latest-small/"
+    val dataDir = "/Users/yuanzuo/Desktop/recommendation-system/sparktutorial/ml-latest-small/"
 
     val trainData = sc.textFile(dataDir + "trainingData.csv").map{ line =>
       val lineAttrs = line.trim.split(",")

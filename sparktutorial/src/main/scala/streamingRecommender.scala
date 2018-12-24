@@ -3,8 +3,7 @@ import org.apache.spark.storage.StorageLevel
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.streaming._
 import org.apache.spark.streaming.kafka._
-// import com.mongodb.casbah.Imports.{MongoClient, MongoCollection, MongoDBObject, $set}
-import org.mongodb.scala._
+import com.mongodb.casbah.Imports.{MongoClient, MongoCollection, MongoDBObject, $set}
 
 object streamingRecommender {
   private val msgConsumerGroup = "netflix-recommending-system-topic-message-consumer-group"
@@ -100,7 +99,7 @@ object streamingRecommender {
       println("USAGE: netflix-recommending-system.jar BatchDuration")
       System.exit(1)
     }
-    val hdfsDir = "/Users/yuanzuo/Desktop/sparktutorial/ml-latest-small/"
+    val hdfsDir = "hdfs://master:9001/leechanx/netflix/"
     val sparkConf = new SparkConf().setAppName("streamingRecommendingSystem")
       .set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
       .set("spark.streaming.concurrentJobs", "9")
