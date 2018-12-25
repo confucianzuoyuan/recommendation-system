@@ -9,7 +9,7 @@ object alsBatchRecommender {
 
   def cosineSimilarity(vector1: DoubleMatrix, vector2: DoubleMatrix): Double = vector1.dot(vector2) / (vector1.norm2() * vector2.norm2())
 
-  def calculateAllCosineSimilarity(model: MatrixFactorizationModel, dataDir: String, dateStr: String): Unit = {
+  def calculateAllCosineSimilarity(model: MatrixFactorizationModel, dataDir: String): Unit = {
     //calculate all the similarity and store the stuff whose sim > 0.5 to Redis.
     val productsVectorRdd = model.productFeatures
       .map{case (movieId, factor) =>
@@ -26,7 +26,27 @@ object alsBatchRecommender {
     
     productsSimilarity.map{ case (movieId1, movieId2, sim) => 
       movieId1.toString + "," + movieId2.toString + "," + sim.toString
-    }.saveAsTextFile(dataDir + "allSimilarity_" + dateStr)
+    }.saveAsTextFile(dataDir + "allSimilarity")
+
+    productsSimilarity.map{ case (movieId1, movieId2, sim) => 
+      (movieId1, List((movieId2, sim)))
+    }
+    .reduceByKey((pre, after) => pre ::: after)
+    .map{p => (p._1, p._2 sortBy (- _._2))}
+    .map{
+      p => p._1.toString + ":" + p._2.map(i => i._1.toString).take(20).mkString(",")
+    }
+    .saveAsTextFile(dataDir + "simHash")
+
+    productsSimilarity.map{ case (movieId1, movieId2, sim) =>
+      (movieId1, List((movieId2, sim)))
+    }
+    .reduceByKey((pre, after) => pre ::: after)
+    .map{p => (p._1, p._2 sortBy (- _._2))} 
+    .map{
+      p => p._1.toString + ":" + p._2.map(i => i._1 + " " + i._2).mkString(",")
+    }
+    .saveAsTextFile(dataDir + "simi")
 
     productsVectorRdd.unpersist()
     productsSimilarity.unpersist()
@@ -35,15 +55,9 @@ object alsBatchRecommender {
   def main(args: Array[String]) {
     val conf = new SparkConf().setAppName("alsBatchRecommender").set("spark.executor.memory", "2g")
     val sc = new SparkContext(conf)
-    if (args.length < 1) {
-        println("USAGE:")
-        println("spark-submit ... xxx.jar Date_String [Iteration]")
-        println("spark-submit ... xxx.jar 20160424 10")
-        sys.exit()
-    }
-    val dateStr = args(0)
 
-    val iterations = if (args.length > 1) args(1).toInt else 5
+    // 迭代次数
+    val iterations = 10
 
     val dataDir = "/Users/yuanzuo/Desktop/recommendation-system/sparktutorial/ml-latest-small/"
 
@@ -57,8 +71,8 @@ object alsBatchRecommender {
 
     trainData.unpersist()
 
-    calculateAllCosineSimilarity(model, dataDir, dateStr) //save cos sim.
-    model.save(sc, dataDir + "ALSmodel_" + dateStr) //save model.
+    calculateAllCosineSimilarity(model, dataDir) //save cos sim.
+    model.save(sc, dataDir + "ALSmodel") //save model.
 
     val realRatings = sc.textFile(dataDir + "realRatings.csv").map{ line =>
       val lineAttrs = line.trim.split(",")

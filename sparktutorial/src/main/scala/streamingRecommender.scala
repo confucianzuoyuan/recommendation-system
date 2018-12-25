@@ -99,7 +99,7 @@ object streamingRecommender {
       println("USAGE: netflix-recommending-system.jar BatchDuration")
       System.exit(1)
     }
-    val hdfsDir = "hdfs://master:9001/leechanx/netflix/"
+    val dataDir = "/Users/yuanzuo/Desktop/recommendation-system/sparktutorial/ml-latest-small"
     val sparkConf = new SparkConf().setAppName("streamingRecommendingSystem")
       .set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
       .set("spark.streaming.concurrentJobs", "9")
@@ -110,7 +110,7 @@ object streamingRecommender {
     val sc = new SparkContext(sparkConf)
 
     //每个电影的最相似的K个电影，HASH[电影Id, 相似的K个电影Ids]
-    val topKMostSimilarMovies = sc.textFile(hdfsDir + "simTopK.txt")
+    val topKMostSimilarMovies = sc.textFile(dataDir + "simTopK.txt")
       .map{line =>
         val dataArr = line.trim.split(":")
         val movieId = dataArr(0).toInt
@@ -119,7 +119,7 @@ object streamingRecommender {
       }.collectAsMap
 
     //每个电影与其他电影的相似度，HASH[电影Id, HASH[电影Id2, Id1与Id2相似度]]
-    val movie2movieSimilarity = sc.textFile(hdfsDir + "simSimi.txt")
+    val movie2movieSimilarity = sc.textFile(dataDir + "simSimi.txt")
       .map{line =>
         val dataArr = line.trim.split(":")
         val movieId1 = dataArr(0).toInt
@@ -204,7 +204,7 @@ object streamingRecommender {
       }
     }
 
-    ssc.checkpoint(hdfsDir + "checkpoint_dir")
+    ssc.checkpoint(dataDir + "checkpoint_dir")
     ssc.start()
     ssc.awaitTermination()
   }
