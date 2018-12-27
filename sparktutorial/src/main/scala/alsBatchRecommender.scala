@@ -34,7 +34,7 @@ object alsBatchRecommender {
     .reduceByKey((pre, after) => pre ::: after)
     .map{p => (p._1, p._2 sortBy (- _._2))}
     .map{
-      p => p._1.toString + ":" + p._2.map(i => i._1.toString).take(20).mkString(",")
+      p => p._1.toString + ":" + p._2.map(i => i._1.toString).mkString(",")
     }
     .saveAsTextFile(dataDir + "simHash")
 

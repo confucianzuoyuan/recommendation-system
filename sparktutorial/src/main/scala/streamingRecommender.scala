@@ -20,6 +20,7 @@ object streamingRecommender {
     recentRating += ((movieId, rate))
     //将本次评分写回到MONGODB，为了测试方便暂时不需要，上线再取消注释
     //collection.insert(MongoDBObject("userId" -> userId, "movieId" -> movieId, "rate" -> rate, "timestamp" -> timestamp))
+    // println(recentRating)
     recentRating.toArray
   }
 
@@ -28,7 +29,8 @@ object streamingRecommender {
     //return type：与movieId最相似的电影们，每一项是<other_movieId>
     import com.mongodb.casbah.Imports._
     val similarMoviesBeforeFilter = mostSimilarMovies.getOrElse(movieId, Array[Int]())
-    val query = MongoDBObject("userId" -> movieId)
+    // println("similarMoviesBeforeFilter: ", similarMoviesBeforeFilter.mkString("\n"))
+    val query = MongoDBObject("userId" -> userId)
     val condition = "movieId" $in similarMoviesBeforeFilter
     val hasRated = collectionForRatingRecords.find(query ++ condition).toArray.map(_.get("movieId").toString.toInt).toSet
     similarMoviesBeforeFilter.filter(hasRated.contains(_) == false)
