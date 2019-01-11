@@ -12,8 +12,8 @@ import redis.clients.jedis.Jedis
 import scala.collection.JavaConversions._
 
 object ConnHelper extends Serializable{
-  lazy val jedis = new Jedis("linux")
-  lazy val mongoClient = MongoClient(MongoClientURI("mongodb://linux:27017/recommender"))
+  lazy val jedis = new Jedis("localhost")
+  lazy val mongoClient = MongoClient(MongoClientURI("mongodb://localhost:27017/recommender"))
 }
 
 case class MongConfig(uri:String,db:String)
@@ -40,7 +40,7 @@ object StreamingRecommender {
 
     val config = Map(
       "spark.cores" -> "local[*]",
-      "mongo.uri" -> "mongodb://linux:27017/recommender",
+      "mongo.uri" -> "mongodb://localhost:27017/recommender",
       "mongo.db" -> "recommender",
       "kafka.topic" -> "recommender"
     )
@@ -80,7 +80,7 @@ object StreamingRecommender {
 
     //创建到Kafka的连接
     val kafkaPara = Map(
-      "bootstrap.servers" -> "linux:9092",
+      "bootstrap.servers" -> "localhost:9092",
       "key.deserializer" -> classOf[StringDeserializer],
       "value.deserializer" -> classOf[StringDeserializer],
       "group.id" -> "recommender",
@@ -165,7 +165,7 @@ object StreamingRecommender {
     }
 
     score.groupBy(_._1).map{case (mid,sims) =>
-      (mid,sims.map(_._2).sum / sims.length + log(increMap(mid)) - log(decreMap(mid)))
+      (mid,sims.map(_._2).sum / sims.length + log(increMap.getOrDefault(mid, 1)) - log(decreMap.getOrDefault(mid, 1)))
     }.toArray
 
   }

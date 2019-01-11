@@ -16,6 +16,7 @@
         <module>statisticsRecommender</module>
         <module>OfflineRecommender</module>
         <module>StreamingRecommender</module>
+        <module>ContentBasedRecommender</module>
     </modules>
 
     <dependencyManagement>

@@ -6,6 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="ContentBasedRecommender" />
         <module name="dataloader" />
         <module name="OfflineRecommender" />
         <module name="statisticsRecommender" />
@@ -13,14 +14,15 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="dataloader" target="1.5" />
+      <module name="ContentBasedRecommender" target="1.8" />
+      <module name="dataloader" target="1.8" />
       <module name="mainmodel" target="1.8" />
-      <module name="MovieRecommendSystem" target="1.5" />
+      <module name="MovieRecommendSystem" target="1.8" />
       <module name="offlineRecommender" target="1.8" />
       <module name="OfflineRecommender" target="1.8" />
       <module name="recommender" target="1.8" />
-      <module name="statisticsRecommender" target="1.5" />
-      <module name="StreamingRecommender" target="1.5" />
+      <module name="statisticsRecommender" target="1.8" />
+      <module name="StreamingRecommender" target="1.8" />
       <module name="streamingRecommender" target="1.8" />
     </bytecodeTargetLevel>
   </component>

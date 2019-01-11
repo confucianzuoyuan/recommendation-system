@@ -72,9 +72,9 @@ case class ESConfig(val httpHosts:String, val transportHosts:String, val index:S
 // 数据的主加载服务
 object DataLoader {
 
-  val MOVIE_DATA_PATH = "C:\\Users\\Administrator\\Desktop\\MovieRecommendSystem\\recommender\\dataloader\\src\\main\\resources\\movies.csv"
-  val RATING_DATA_PATH = "C:\\Users\\Administrator\\Desktop\\MovieRecommendSystem\\recommender\\dataloader\\src\\main\\resources\\ratings.csv"
-  val TAG_DATA_PATH = "C:\\Users\\Administrator\\Desktop\\MovieRecommendSystem\\recommender\\dataloader\\src\\main\\resources\\tags.csv"
+  val MOVIE_DATA_PATH = "/Users/yuanzuo/Desktop/recommendation-system/MovieRecommendSystem/recommender/dataloader/src/main/resources/movies.csv"
+  val RATING_DATA_PATH = "/Users/yuanzuo/Desktop/recommendation-system/MovieRecommendSystem/recommender/dataloader/src/main/resources/ratings.csv"
+  val TAG_DATA_PATH = "/Users/yuanzuo/Desktop/recommendation-system/MovieRecommendSystem/recommender/dataloader/src/main/resources/tags.csv"
 
   val MONGODB_MOVIE_COLLECTION = "Movie"
   val MONGODB_RATING_COLLECTION = "Rating"
@@ -87,12 +87,12 @@ object DataLoader {
 
     val config = Map(
       "spark.cores" -> "local[*]",
-      "mongo.uri" -> "mongodb://linux:27017/recommender",
+      "mongo.uri" -> "mongodb://localhost:27017/recommender",
       "mongo.db" -> "recommender",
-      "es.httpHosts" -> "linux:9200",
-      "es.transportHosts" -> "linux:9300",
+      "es.httpHosts" -> "localhost:9200",
+      "es.transportHosts" -> "localhost:9300",
       "es.index" -> "recommender",
-      "es.cluster.name" -> "es-cluster"
+      "es.cluster.name" -> "elasticsearch"
     )
 
 
@@ -129,7 +129,7 @@ object DataLoader {
     implicit val mongoConfig = MongoConfig(config.get("mongo.uri").get,config.get("mongo.db").get)
 
     // 需要将数据保存到MongoDB中
-    //storeDataInMongoDB(movieDF, ratingDF, tagDF)
+    storeDataInMongoDB(movieDF, ratingDF, tagDF)
 
 
     /**
