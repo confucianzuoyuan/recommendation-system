@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/recommender/ContentBasedRecommender/ContentBasedRecommender.iml" filepath="$PROJECT_DIR$/recommender/ContentBasedRecommender/ContentBasedRecommender.iml" />
+      <module fileurl="file://$PROJECT_DIR$/recommender/OfflineRecommender/OfflineRecommender.iml" filepath="$PROJECT_DIR$/recommender/OfflineRecommender/OfflineRecommender.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/RecommendSystem.iml" filepath="$PROJECT_DIR$/.idea/RecommendSystem.iml" />
+      <module fileurl="file://$PROJECT_DIR$/recommender/StreamingRecommender/StreamingRecommender.iml" filepath="$PROJECT_DIR$/recommender/StreamingRecommender/StreamingRecommender.iml" />
+      <module fileurl="file://$PROJECT_DIR$/businessServer/businessServer.iml" filepath="$PROJECT_DIR$/businessServer/businessServer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/recommender/dataloader/dataloader.iml" filepath="$PROJECT_DIR$/recommender/dataloader/dataloader.iml" />
+      <module fileurl="file://$PROJECT_DIR$/recommender/kafkastream/kafkastream.iml" filepath="$PROJECT_DIR$/recommender/kafkastream/kafkastream.iml" />
+      <module fileurl="file://$PROJECT_DIR$/recommender/recommender.iml" filepath="$PROJECT_DIR$/recommender/recommender.iml" />
+      <module fileurl="file://$PROJECT_DIR$/recommender/statisticsRecommender/statisticsRecommender.iml" filepath="$PROJECT_DIR$/recommender/statisticsRecommender/statisticsRecommender.iml" />
+      <module fileurl="file://$PROJECT_DIR$/website/website.iml" filepath="$PROJECT_DIR$/website/website.iml" />
+    </modules>
+  </component>
+</project>
