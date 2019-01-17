@@ -72,9 +72,17 @@ case class ESConfig(val httpHosts:String, val transportHosts:String, val index:S
 // 数据的主加载服务
 object DataLoader {
 
-  val MOVIE_DATA_PATH = "/Users/yuanzuo/Desktop/recommendation-system/MovieRecommendSystem/recommender/dataloader/src/main/resources/movies.csv"
-  val RATING_DATA_PATH = "/Users/yuanzuo/Desktop/recommendation-system/MovieRecommendSystem/recommender/dataloader/src/main/resources/ratings.csv"
-  val TAG_DATA_PATH = "/Users/yuanzuo/Desktop/recommendation-system/MovieRecommendSystem/recommender/dataloader/src/main/resources/tags.csv"
+//  val MOVIE_DATA_PATH = "/Users/yuanzuo/Desktop/recommendation-system/MovieRecommendSystem/recommender/dataloader/src/main/resources/movies.csv"
+//  val RATING_DATA_PATH = "/Users/yuanzuo/Desktop/recommendation-system/MovieRecommendSystem/recommender/dataloader/src/main/resources/ratings.csv"
+//  val TAG_DATA_PATH = "/Users/yuanzuo/Desktop/recommendation-system/MovieRecommendSystem/recommender/dataloader/src/main/resources/tags.csv"
+
+  import scala.reflect.io.File
+
+  val RESOURCE_PATH = File("../../../../resources/").toAbsolute
+
+  val MOVIE_DATA_PATH = RESOURCE_PATH + "movies.csv"
+  val RATING_DATA_PATH = RESOURCE_PATH + "ratings.csv"
+  val TAG_DATA_PATH = RESOURCE_PATH + "tags.csv"
 
   val MONGODB_MOVIE_COLLECTION = "Movie"
   val MONGODB_RATING_COLLECTION = "Rating"
