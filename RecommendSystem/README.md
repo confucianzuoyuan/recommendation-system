@@ -45,7 +45,7 @@
 6. 日志收集工具flume的使用。
 
 - 版本: 最新即可
-- 配置文件编写:
+- 配置文件编写，放在conf下面，名字是log-kafka.properties:
 
 ```properties
 agent.sources = exectail
@@ -82,10 +82,24 @@ agent.channels.memoryChannel.type = memory
 agent.channels.memoryChannel.capacity = 10000
 ```
 
+启动flume
+
+```
+$ ./bin/flume-ng agent -c ./conf/ -f ./conf/log-kafka.properties -n agent
+```
+
 7. website的构建
 
 ```
 $ cd website/website
+$ npm install
+```
+
+需要修改源码, 路径：`node_modules/ng2-echarts/directives/ng2-echarts-base.d.ts`
+
+将`differ: KeyValueDiffer`改为`differ: KeyValueDiffer<number, number>`
+
+```
 $ ./node_modules/@angular/cli/bin/ng build
 ```
 
