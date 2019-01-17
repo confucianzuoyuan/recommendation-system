@@ -12,7 +12,7 @@ object ALSTrainer {
 
     val config = Map(
       "spark.cores" -> "local[*]",
-      "mongo.uri" -> "mongodb://linux:27017/recommender",
+      "mongo.uri" -> "mongodb://localhost:27017/recommender",
       "mongo.db" -> "recommender"
     )
 
@@ -37,19 +37,24 @@ object ALSTrainer {
       .rdd
       .map(rating => Rating(rating.uid,rating.mid,rating.score)).cache()
 
+    val splits = ratingRDD.randomSplit(Array(0.8, 0.2))
+
+    val trainingRDD = splits(0)
+    val testingRDD = splits(1)
+
     //输出最优参数
-    adjustALSParams(ratingRDD)
+    adjustALSParams(trainingRDD, testingRDD)
 
     //关闭Spark
     spark.close()
   }
 
   // 输出最终的最优参数
-  def adjustALSParams(trainData:RDD[Rating]): Unit ={
+  def adjustALSParams(trainData:RDD[Rating], testData:RDD[Rating]): Unit ={
     val result = for(rank <- Array(30,40,50,60,70); lambda <- Array(1, 0.1, 0.001))
       yield {
         val model = ALS.train(trainData,rank,5,lambda)
-        val rmse = getRmse(model,trainData)
+        val rmse = getRmse(model, testData)
         (rank,lambda,rmse)
       }
     println(result.sortBy(_._3).head)
