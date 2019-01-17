@@ -5,8 +5,7 @@ images/
 *.iml
 .idea/
 package-lock.json
-businessServer/**/target/
-recommender/**/target/
+target/
 *.class
 
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and WebStorm
