@@ -70,18 +70,25 @@ object ContentBasedRecommender {
 
     val tagsData = spark.createDataFrame(movieSeq).toDF("mid", "name", "genres")
 
+    // 实例化一个分词器，默认按空格分
     val tokenizer = new Tokenizer().setInputCol("genres").setOutputCol("words")
 
+    // 用分词器做转换，生成列“words”，返回一个dataframe，增加一列words
     val wordsData = tokenizer.transform(tagsData)
 
+    // HashingTF是一个工具，可以把一个词语序列，转换成词频(初始特征)
     val hashingTF = new HashingTF().setInputCol("words").setOutputCol("rawFeatures").setNumFeatures(20)
 
+    // 用 HashingTF 做处理，返回dataframe
     val featurizedData = hashingTF.transform(wordsData)
 
+    // IDF 也是一个工具，用于计算文档的IDF
     val idf = new IDF().setInputCol("rawFeatures").setOutputCol("features")
 
+    // 将词频数据传入，得到idf模型（统计文档）
     val idfModel = idf.fit(featurizedData)
 
+    // 模型对原始数据做处理，计算出idf后，用tf-idf得到新的特征矩阵
     val rescaledData = idfModel.transform(featurizedData)
 
     val toArr: Any => String = _.asInstanceOf[SparseVector].toArray.mkString(",")
@@ -90,12 +97,26 @@ object ContentBasedRecommender {
 
     val new_rescaledData = rescaledData.withColumn("new_features", toArrUdf(rescaledData("features")))
 
+    new_rescaledData.show()
+
     val movieFeatures = new_rescaledData
       .select("new_features", "mid")
       .rdd
       .map(x => {
         (x(1).toString.toInt, new DoubleMatrix(x(0).toString.split(",").map(_.toDouble)))
       })
+    movieFeatures.collect().foreach(println)
+
+    // test new method
+    val test = rescaledData.map{
+      case row => ( row.getAs[Int]("mid"), row.getAs[SparseVector]("features").toArray )
+    }
+      .rdd
+      .map(x => {
+        (x._1, new DoubleMatrix(x._2) )
+      })
+    test.collect().foreach(println)
+    println(test==movieFeatures)
 
     val movieRecs = movieFeatures.cartesian(movieFeatures)
       .filter{case (a,b) => a._1 != b._1}
