@@ -13255,10 +13255,24 @@ a.anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Amazon&#25512;&#33616;&#31995;&#32479;20&#24180;&#21464;&#36801;">Amazon&#25512;&#33616;&#31995;&#32479;20&#24180;&#21464;&#36801;<a class="anchor-link" href="#Amazon&#25512;&#33616;&#31995;&#32479;20&#24180;&#21464;&#36801;">&#182;</a></h1><blockquote><p>近期，IEEE Internet Computing上发表了一篇名为《亚马逊推荐系统二十年》的文章，提纲挈领地回顾了亚马逊推荐系统二十年来的发展，而这二十年的起点，就是基于物品的协同过滤算法，也就是ItemCF算法的发明时间，而文章的作者，也正是当年ItemCF的发明人。作为靠ItemCF算法养家糊口的从业人员，有必要学习一下“祖师爷”的训导。</p>
+<h1><center>Amazon推荐系统20年变迁</center></h1>
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<blockquote><p>近期，IEEE Internet Computing上发表了一篇名为《亚马逊推荐系统二十年》的文章，提纲挈领地回顾了亚马逊推荐系统二十年来的发展，而这二十年的起点，就是基于物品的协同过滤算法，也就是ItemCF算法的发明时间，而文章的作者，也正是当年ItemCF的发明人。作为靠ItemCF算法养家糊口的从业人员，有必要学习一下“祖师爷”的训导。</p>
 </blockquote>
 <p>二十年以来，亚马逊一直致力于构建一个千人千面的商店。每个来到亚马逊网站的人看到的都不一样，因为网站针对他们的个人兴趣做了个性化。就如同你走进一个商店，商店架子上的商品开始重新排布，将你可能需要的排在前面，你不太可能喜欢的排在后面。</p>
 <p>基于你当前的场景和你过去的行为，亚马逊的推荐系统从一个数以亿计的商品库中，为你挑选出少量你可能感兴趣的物品。背后的算法并不是什么魔法，它只是将其他人已经发现的信息与你共享。一切都由算法自动进行，在计算机的帮助下，人与人之间在隐性、匿名地互相帮助。</p>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>亚马逊在1998年上线了基于物品的协同过滤算法（下文简称ItemCF算法），将推荐系统推向服务百万级用户和处理百万级商品这样一个前所未见的规模。自从我们2003年在IEEE Internet Computing上发表关于这一算法的文章之后，该算法在互联网上开始广泛流传，包括YouTube，Netflix和其他很多公司在内都在使用。该算法的成功来源于以下几个方面：</p>
 <ul>
 <li>简单、可扩展。</li>
@@ -13274,7 +13288,14 @@ a.anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="&#31639;&#27861;">&#31639;&#27861;<a class="anchor-link" href="#&#31639;&#27861;">&#182;</a></h1><blockquote><p>英文中常用 the xxx来表示xxx的地位，例如乔丹在98年总决赛中的绝杀被称为the shot，本文这部分的标题叫做the algorithm，虽然作者本意并非如此，但译者觉得用这种方式来表示ItemCF算法在推荐系统中的地位也不为过。</p>
+<h1><center>算法</center></h1>
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<blockquote><p>英文中常用 the xxx来表示xxx的地位，例如乔丹在98年总决赛中的绝杀被称为the shot，本文这部分的标题叫做the algorithm，虽然作者本意并非如此，但译者觉得用这种方式来表示ItemCF算法在推荐系统中的地位也不为过。</p>
 </blockquote>
 <p>如我们在2003年所描述的，ItemCF算法是很直观的。在90年代中期，协同过滤算法主要还是基于用户的，这意味着算法的第一步是要通过搜索所有的用户来计算某个用户在兴趣方面的相似用户（例如拥有相似的购买模式），之后再看这些相似用户看过哪些这个用户没有看过的东西。与之相反，我们的算法第一步是计算每个物品的相关物品。这里的“相关”可以表示多种含义，但在这里，我们可以将其模糊地定义为“买了一个物品的人具有超乎寻常的可能性（unusually likely）会买另外一个”所以，对于每个物品$i_1$，我们希望得到所有购买了$i_1$的用户会以超乎寻常的频率一起购买的$i_2$。</p>
 <blockquote><p>其实UserCF也并不是一无是处，从计算形式上来讲它和ItemCF是完全对等的。UserCF适用于用户数的变化频率小于物品数的变化频率的场景，ItemCF则相反。当今的互联网环境下确实是更适合ItemCF发挥，但未来说不好也会有适合UserCF的场景。</p>
@@ -13286,7 +13307,7 @@ a.anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="&#31639;&#27861;">&#31639;&#27861;<a class="anchor-link" href="#&#31639;&#27861;">&#182;</a></h1><p>一旦这张相关物品的表构建好，我们可以通过一系列的查找来构建推荐系统。对于一个用户当前场景下和历史兴趣中的每个部分，我们寻找到其相关物品，将它们结合起来得到用户最可能感兴趣的物品，过滤掉已经被看过或购买过的，剩下的就是就是待推荐的物品。</p>
+<p>一旦这张相关物品的表构建好，我们可以通过一系列的查找来构建推荐系统。对于一个用户当前场景下和历史兴趣中的每个部分，我们寻找到其相关物品，将它们结合起来得到用户最可能感兴趣的物品，过滤掉已经被看过或购买过的，剩下的就是就是待推荐的物品。</p>
 <blockquote><p>短短几句话就把推荐系统架构核心点透，祖师爷果然功力深厚。</p>
 </blockquote>
 <p>这个算法相比于旧的基于用户的协同过滤算法具有很多优势。最重要的是，主要的计算都是在离线发生的——相关物品的批量计算——而推荐的计算过程可以通过实时的一系列查找来完成。推荐结果质量高并且有用，尤其是数据量充足时。虽然二十年来各种新算法在不断被发明，在可观测到的质量方面，ItemCF仍然极具竞争力。该算法可无损地扩展到亿级用户和千万级物品，而不需要抽样或其他会影响推荐质量的手段。该算法在用户兴趣更新时可以立刻随之更新。最后，该算法的结果可以用很直观的方式来解释，因为其来源就是用户记得自己曾经买过的物品列表。</p>
@@ -13297,7 +13318,7 @@ a.anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="&#31639;&#27861;">&#31639;&#27861;<a class="anchor-link" href="#&#31639;&#27861;">&#182;</a></h1><p>这个算法相比于旧的基于用户的协同过滤算法具有很多优势。最重要的是，主要的计算都是在离线发生的——相关物品的批量计算——而推荐的计算过程可以通过实时的一系列查找来完成。推荐结果质量高并且有用，尤其是数据量充足时。虽然二十年来各种新算法在不断被发明，在可观测到的质量方面，ItemCF仍然极具竞争力。该算法可无损地扩展到亿级用户和千万级物品，而不需要抽样或其他会影响推荐质量的手段。该算法在用户兴趣更新时可以立刻随之更新。最后，该算法的结果可以用很直观的方式来解释，因为其来源就是用户记得自己曾经买过的物品列表。</p>
+<p>这个算法相比于旧的基于用户的协同过滤算法具有很多优势。最重要的是，主要的计算都是在离线发生的——相关物品的批量计算——而推荐的计算过程可以通过实时的一系列查找来完成。推荐结果质量高并且有用，尤其是数据量充足时。虽然二十年来各种新算法在不断被发明，在可观测到的质量方面，ItemCF仍然极具竞争力。该算法可无损地扩展到亿级用户和千万级物品，而不需要抽样或其他会影响推荐质量的手段。该算法在用户兴趣更新时可以立刻随之更新。最后，该算法的结果可以用很直观的方式来解释，因为其来源就是用户记得自己曾经买过的物品列表。</p>
 
 </div>
 </div>
@@ -13305,7 +13326,14 @@ a.anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="2003&#24180;&#65306;&#20122;&#39532;&#36874;&#65292;Netflix&#65292;YouTube&#8230;&#8230;">2003&#24180;&#65306;&#20122;&#39532;&#36874;&#65292;Netflix&#65292;YouTube&#8230;&#8230;<a class="anchor-link" href="#2003&#24180;&#65306;&#20122;&#39532;&#36874;&#65292;Netflix&#65292;YouTube&#8230;&#8230;">&#182;</a></h1><p>截至我们在2003年发表IEEE上的文章时，ItemCF已经在亚马逊广泛使用了。亚马逊在主页非常显眼的位置放置了基于你购买历史和浏览行为的个性化推荐模块。搜索结果页会给出和你搜索相关的推荐。购物车会给你推荐其他可以加入购物车的商品，可能会刺激你在最后一刻完成捆绑购买，或者对你已经打算购买的商品形成补充。在你订单的尾部，会出现更多的推荐，给出建议你之后可以购买的东西。借助电子邮件，列表页，商品详情页以及其他页面，很多亚马逊上的页面多少都会有些推荐模块，开始形成一个千人千面的商店。</p>
+<h1><center>2003年：亚马逊，Netflix，YouTube……</center></h1>
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>截至我们在2003年发表IEEE上的文章时，ItemCF已经在亚马逊广泛使用了。亚马逊在主页非常显眼的位置放置了基于你购买历史和浏览行为的个性化推荐模块。搜索结果页会给出和你搜索相关的推荐。购物车会给你推荐其他可以加入购物车的商品，可能会刺激你在最后一刻完成捆绑购买，或者对你已经打算购买的商品形成补充。在你订单的尾部，会出现更多的推荐，给出建议你之后可以购买的东西。借助电子邮件，列表页，商品详情页以及其他页面，很多亚马逊上的页面多少都会有些推荐模块，开始形成一个千人千面的商店。</p>
 
 </div>
 </div>
@@ -13313,7 +13341,7 @@ a.anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="2003&#24180;&#65306;&#20122;&#39532;&#36874;&#65292;Netflix&#65292;YouTube&#8230;&#8230;">2003&#24180;&#65306;&#20122;&#39532;&#36874;&#65292;Netflix&#65292;YouTube&#8230;&#8230;<a class="anchor-link" href="#2003&#24180;&#65306;&#20122;&#39532;&#36874;&#65292;Netflix&#65292;YouTube&#8230;&#8230;">&#182;</a></h1><blockquote><p>在相关技术已经比较成熟的今天，仍然有很多网站大量依靠人工运营来决定网站上内容的排布，可见这种转换中需要克服的阻力和惯性之大。所以我们不仅要佩服亚马逊的技术能力，更要向其敢于革新的勇气和决心看齐。此外，这种”全面推荐化“的产品思路的意义不只是提升技术逼格，更重要的是，它提供了一种规模化的、持续可依赖的效果提升路线。从此销量或点击的提升不再取决于销售或运营人员的灵机一动，也不再受限于运营的人力，而是可以用算法系统化持续取得提升。</p>
+<blockquote><p>在相关技术已经比较成熟的今天，仍然有很多网站大量依靠人工运营来决定网站上内容的排布，可见这种转换中需要克服的阻力和惯性之大。所以我们不仅要佩服亚马逊的技术能力，更要向其敢于革新的勇气和决心看齐。此外，这种”全面推荐化“的产品思路的意义不只是提升技术逼格，更重要的是，它提供了一种规模化的、持续可依赖的效果提升路线。从此销量或点击的提升不再取决于销售或运营人员的灵机一动，也不再受限于运营的人力，而是可以用算法系统化持续取得提升。</p>
 </blockquote>
 <p>但有一个问题就是：开发推荐系统的成本是很高的，是一个链条，比如日志的管理，算法团队，工程师团队，代码落地等等...</p>
 
@@ -13323,7 +13351,7 @@ a.anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="2003&#24180;&#65306;&#20122;&#39532;&#36874;&#65292;Netflix&#65292;YouTube&#8230;&#8230;">2003&#24180;&#65306;&#20122;&#39532;&#36874;&#65292;Netflix&#65292;YouTube&#8230;&#8230;<a class="anchor-link" href="#2003&#24180;&#65306;&#20122;&#39532;&#36874;&#65292;Netflix&#65292;YouTube&#8230;&#8230;">&#182;</a></h1><p>很多其他公司和组织也在使用这个算法。在2010年，YouTube宣城他们使用ItemCF来做视频推荐。很多开源工具和第三方厂商都使用了这个算法，这使得该算法在网上零售、旅行、新闻、广告等行业中开始广泛出现。在后面的几年中，根据微软研究院的估计，亚马逊上大约30%的页面浏览来自于推荐系统。类似的，Netflix也在广泛使用推荐系统，他们的首席产品官声称80%以上的电影观看来自于推荐系统，并宣称Netflix推荐系统的价值每年高达十亿美元，还要多。</p>
+<p>很多其他公司和组织也在使用这个算法。在2010年，YouTube宣城他们使用ItemCF来做视频推荐。很多开源工具和第三方厂商都使用了这个算法，这使得该算法在网上零售、旅行、新闻、广告等行业中开始广泛出现。在后面的几年中，根据微软研究院的估计，亚马逊上大约30%的页面浏览来自于推荐系统。类似的，Netflix也在广泛使用推荐系统，他们的首席产品官声称80%以上的电影观看来自于推荐系统，并宣称Netflix推荐系统的价值每年高达十亿美元，还要多。</p>
 
 </div>
 </div>
