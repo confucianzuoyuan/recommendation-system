@@ -47,7 +47,7 @@ object StreamingRecommender {
     //创建一个SparkConf配置
     val sparkConf = new SparkConf().setAppName("StreamingRecommender").setMaster(config("spark.cores"))
 
-    //创建Spark的对象
+    //创建Spark的对象, 因为spark session中没有封装streaming context，所以需要new一个
     val spark = SparkSession.builder().config(sparkConf).getOrCreate()
     val sc = spark.sparkContext
     val ssc = new StreamingContext(sc,Seconds(2))
@@ -57,6 +57,7 @@ object StreamingRecommender {
 
     //******************  广播电影相似度矩阵
 
+    // 为了性能考虑，把相似度矩阵这个大数据广播出去；广播变量的好处：不是每个task一份变量副本，而是变成每个节点的executor才一份副本
       //装换成为 Map[Int, Map[Int,Double]]
     val simMoviesMatrix = spark
       .read
@@ -68,7 +69,7 @@ object StreamingRecommender {
       .rdd
       .map{recs =>
         (recs.mid,recs.recs.map(x=> (x.rid,x.r)).toMap)
-      }.collectAsMap()
+      }.collectAsMap()  // 把元组转换为map，以mid为key，推荐列表为value
 
     val simMoviesMatrixBroadCast = sc.broadcast(simMoviesMatrix)
 
@@ -84,7 +85,7 @@ object StreamingRecommender {
       "key.deserializer" -> classOf[StringDeserializer],
       "value.deserializer" -> classOf[StringDeserializer],
       "group.id" -> "recommender",
-      "auto.offset.reset" -> "latest"
+      "auto.offset.reset" -> "latest"    //每次从kafka 消费数据，都是通过zookeeper存储的数据offset，来判断需要获取消息在消息日志里的起始位置
     )
 
     val kafkaStream = KafkaUtils.createDirectStream[String,String](ssc,LocationStrategies.PreferConsistent,ConsumerStrategies.Subscribe[String,String](Array(config("kafka.topic")),kafkaPara))
@@ -92,7 +93,7 @@ object StreamingRecommender {
     // UID|MID|SCORE|TIMESTAMP
     // 产生评分流
     val ratingStream = kafkaStream.map{case msg=>
-      var attr = msg.value().split("\\|")
+      var attr = msg.value().split("\\|")            // split方法对. | * + ^需要转义（类似正则）
       (attr(0).toInt,attr(1).toInt,attr(2).toDouble,attr(3).toInt)
     }
 
@@ -130,7 +131,8 @@ object StreamingRecommender {
     val streaRecsCollection = ConnHelper.mongoClient(mongConfig.db)(MONGODB_STREAM_RECS_COLLECTION)
 
     streaRecsCollection.findAndRemove(MongoDBObject("uid" -> uid))
-    streaRecsCollection.insert(MongoDBObject("uid" -> uid, "recs" -> streamRecs.map(x=> x._1+":"+x._2).mkString("|")))
+    //streaRecsCollection.insert(MongoDBObject("uid" -> uid, "recs" -> streamRecs.map(x=> x._1+":"+x._2).mkString("|")))
+    streamRecsCollection.insert(MongoDBObject("uid"->uid, "recs"-> streamRecs.map(x => MongoDBObject("mid"->x._1, "score"->x._2)) ))
 
   }
 
@@ -203,7 +205,7 @@ object StreamingRecommender {
     */
   def getTopSimMovies(num:Int, mid:Int, uid:Int, simMovies:scala.collection.Map[Int,scala.collection.immutable.Map[Int,Double]])(implicit mongConfig: MongConfig): Array[Int] ={
     //从广播变量的电影相似度矩阵中获取当前电影所有的相似电影
-    val allSimMovies = simMovies.get(mid).get.toArray
+    val allSimMovies = simMovies(mid).toArray
     //获取用户已经观看过得电影
     val ratingExist = ConnHelper.mongoClient(mongConfig.db)(MONGODB_RATING_COLLECTION).find(MongoDBObject("uid" -> uid)).toArray.map{item =>
       item.get("mid").toString.toInt
